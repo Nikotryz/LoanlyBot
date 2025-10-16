@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "LoanlyBot": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

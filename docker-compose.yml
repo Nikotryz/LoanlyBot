@@ -1,0 +1,39 @@
+﻿name: loanlybot-app
+
+networks:
+  loanlybot-dev:
+    driver: bridge
+
+services:
+
+  loanlybot:
+    container_name: loanlybot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - loanlybot-dev
+    depends_on:
+      - postgres_db
+    environment:
+      - CONNECTION_STRINGS__POSTGRESQL=Host=postgres_db;Database=loanlybot_db;Username=postgres;Password=900440;
+
+  postgres_db:
+    container_name: postgres
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 900440
+      POSTGRES_DB: loanlybot_db
+    ports:
+      - "5432:5432"
+    networks:
+      - loanlybot-dev
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
