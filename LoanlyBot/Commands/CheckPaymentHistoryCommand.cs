@@ -34,7 +34,7 @@ namespace LoanlyBot.Commands
             }
             else
             {
-                var needPayments = allPayments.Where(x => x.SenderId == message.Chat.Id || x.RecipientId == message.Chat.Id).GroupBy(x => x.Date.Date).OrderByDescending(x => x.Key);
+                var needPayments = allPayments.Where(x => x.SenderId == message.Chat.Id || x.RecipientId == message.Chat.Id).GroupBy(x => x.Date.AddHours(7).Date).OrderByDescending(x => x.Key);
                 var text = new StringBuilder();
                 foreach (var payments in needPayments)
                 {

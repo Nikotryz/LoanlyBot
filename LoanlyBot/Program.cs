@@ -56,12 +56,19 @@ namespace LoanlyBot
                     services.AddDbContext<PostgresContext>(options =>
                         options.UseNpgsql(connectionString)
                     );
-                    services.AddSingleton<DBService>();
+                    services.AddScoped<DBService>();
                     services.AddHostedService<BotService.BotService>();
-                })
-                .Build();
+                });
 
-            await builder.RunAsync();
+            var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<PostgresContext>();
+                db.Database.Migrate();
+            }
+
+            await app.RunAsync();
         }
     }
 }
